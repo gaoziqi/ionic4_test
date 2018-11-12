@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CallLog, CallLogObject } from '@ionic-native/call-log';
+import { CallLog, CallLogObject } from '@ionic-native/call-log/ngx';
 
 @Component({
   selector: 'app-about',
@@ -8,14 +8,14 @@ import { CallLog, CallLogObject } from '@ionic-native/call-log';
 })
 export class AboutPage implements OnInit {
   logs: any[];
-
+  constructor(private callLog: CallLog) {}
   async ngOnInit() {
-    const hasPermission = await CallLog.hasReadPermission();
+    const hasPermission = await this.callLog.hasReadPermission();
     if (!hasPermission) {
-      await CallLog.requestReadPermission();
+      await this.callLog.requestReadPermission();
     }
     const filters: CallLogObject[] = [];
-    this.logs = await CallLog.getCallLog(filters);
+    this.logs = await this.callLog.getCallLog(filters);
     // console.log(this.logs);
   }
 }

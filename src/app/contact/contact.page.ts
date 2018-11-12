@@ -1,5 +1,5 @@
-import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
-import { Contact, Contacts, ContactFindOptions, ContactFieldType } from '@ionic-native/contacts';
+import { Component, OnInit } from '@angular/core';
+import { Contact, Contacts, ContactFindOptions, ContactFieldType } from '@ionic-native/contacts/ngx';
 
 @Component({
   selector: 'app-contact',
