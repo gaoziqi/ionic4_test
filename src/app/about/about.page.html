@@ -1,7 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>About</ion-title>
+    <ion-title>通话记录</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+  <ion-list *ngFor="let log of logs">
+    <ion-item>
+      <ion-label>{{ log.cachedName }}</ion-label>
+      <ion-label>{{ log.date | date }}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

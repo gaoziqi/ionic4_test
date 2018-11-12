@@ -1,36 +1,22 @@
-import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
-import { ContactService } from '../share/contact.service';
-import { Subscription } from 'rxjs';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Contact, Contacts, ContactFindOptions, ContactFieldType } from '@ionic-native/contacts';
 
 @Component({
   selector: 'app-contact',
   templateUrl: 'contact.page.html',
   styleUrls: ['contact.page.scss']
 })
-export class ContactPage implements OnInit, OnDestroy {
-  contacts: Contact[] = [];
-  private success: Subscription;
-  private error: Subscription;
-  constructor(private cs: ContactService, private cdr: ChangeDetectorRef) {}
-  ngOnInit() {
-    this.success = this.cs.onSuccess.subscribe((contacts: Contact[]) => {
-      console.log(contacts);
-      this.contacts = contacts;
-      // 手动更新
-      this.cdr.markForCheck();
-      this.cdr.detectChanges();
-    });
-    this.error = this.cs.onError.subscribe((error: ContactError) => {
-      console.log(error);
-    });
+export class ContactPage implements OnInit {
+  contacts: Contact[];
+
+  constructor(private cs: Contacts) {}
+
+  async ngOnInit() {
     const options = new ContactFindOptions();
     options.multiple = true;
-    const fields = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
-    this.cs.find(fields, options);
+    const fields: ContactFieldType[] = ['*'];
+
+    this.contacts = await this.cs.find(fields, options);
+    // console.log(this.contacts);
   }
-  ngOnDestroy() {
-    this.success.unsubscribe();
-    this.error.unsubscribe();
-  }
-  onDeviceReady(self: ContactPage, e: Event) {}
 }
